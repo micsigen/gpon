@@ -1,0 +1,38 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,shutdown,prometheus
+      base-path: /
+      path-mapping:
+        health: health
+        shutdown: shutdown
+        prometheus: metrics
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+  health:
+    rabbit:
+      enabled: false
+  server:
+    port: ${MANAGEMENT_PORT:9000}
+
+server:
+  port: ${SERVER_PORT:8000}
+
+zeebe:
+  client:
+    broker:
+      gatewayAddress: ${FLOW_BROKER_HOST:localhost}:${FLOW_BROKER_PORT:26500}
+    security:
+      plaintext: ${FLOW_BROKER_SECURITY_PLAINTEXT:true}
+    requestTimeout: PT50S
+    job:
+      pollinterval: ${FLOW_BROKER_POLL_INTERVAL:PT30S}
+    worker:
+      threads: ${FLOW_BROKER_WORKER_THREADS:20}
+      defaultName: "gpon_process_1"
+    default-job-worker-tenant-ids:
+      - "<default>"
