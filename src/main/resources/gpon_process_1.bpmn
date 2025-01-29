@@ -9,10 +9,13 @@
     <bpmn:startEvent id="Event_start_event" name="Start event">
       <bpmn:outgoing>Flow_1pfdgf7</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="Activity_gpon_call_1" name="Call existing GPON REST API">
+    <bpmn:serviceTask id="Activity_gpon_call_1" name="Call existing GPON REST API">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="Activity_gpon_call_1" retries="10" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1pfdgf7</bpmn:incoming>
       <bpmn:outgoing>Flow_0bdqhy5</bpmn:outgoing>
-    </bpmn:task>
+    </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1pfdgf7" sourceRef="Event_start_event" targetRef="Activity_gpon_call_1" />
     <bpmn:intermediateThrowEvent id="Event_end_event" name="End event">
       <bpmn:incoming>Flow_0bdqhy5</bpmn:incoming>
