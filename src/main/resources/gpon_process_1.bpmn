@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_05hbht9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.31.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
-  <bpmn:process id="Process_060i4zn" isExecutable="true">
+  <bpmn:process id="gpon_process_1" name="GPON REST API calling" isExecutable="true">
     <bpmn:extensionElements>
       <zeebe:properties>
         <zeebe:property />
       </zeebe:properties>
     </bpmn:extensionElements>
-    <bpmn:startEvent id="Event_15d5llm" name="GPON start event">
+    <bpmn:startEvent id="Event_start_event" name="Start event">
       <bpmn:outgoing>Flow_1pfdgf7</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="Activity_00paoyj" name="Call GPON REST IF">
+    <bpmn:task id="Activity_gpon_call_1" name="Call existing GPON REST API">
       <bpmn:incoming>Flow_1pfdgf7</bpmn:incoming>
       <bpmn:outgoing>Flow_0bdqhy5</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_1pfdgf7" sourceRef="Event_15d5llm" targetRef="Activity_00paoyj" />
-    <bpmn:intermediateThrowEvent id="Event_15ia4ct" name="End event">
+    <bpmn:sequenceFlow id="Flow_1pfdgf7" sourceRef="Event_start_event" targetRef="Activity_gpon_call_1" />
+    <bpmn:intermediateThrowEvent id="Event_end_event" name="End event">
       <bpmn:incoming>Flow_0bdqhy5</bpmn:incoming>
     </bpmn:intermediateThrowEvent>
-    <bpmn:sequenceFlow id="Flow_0bdqhy5" sourceRef="Activity_00paoyj" targetRef="Event_15ia4ct" />
+    <bpmn:sequenceFlow id="Flow_0bdqhy5" sourceRef="Activity_gpon_call_1" targetRef="Event_end_event" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_060i4zn">
-      <bpmndi:BPMNShape id="Event_15d5llm_di" bpmnElement="Event_15d5llm">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="gpon_process_1">
+      <bpmndi:BPMNShape id="Event_15d5llm_di" bpmnElement="Event_start_event">
         <dc:Bounds x="182" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="160" y="145" width="87" height="14" />
+          <dc:Bounds x="177" y="145" width="54" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_00paoyj_di" bpmnElement="Activity_00paoyj">
+      <bpmndi:BPMNShape id="Activity_00paoyj_di" bpmnElement="Activity_gpon_call_1">
         <dc:Bounds x="270" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_15ia4ct_di" bpmnElement="Event_15ia4ct">
+      <bpmndi:BPMNShape id="Event_15ia4ct_di" bpmnElement="Event_end_event">
         <dc:Bounds x="422" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="415" y="145" width="50" height="14" />

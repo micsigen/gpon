@@ -7,6 +7,7 @@ plugins {
 
 group = "io.comunda.demo"
 version = "0.0.1-SNAPSHOT"
+val zeebeVersion = "8.3.4"
 
 java {
 	toolchain {
