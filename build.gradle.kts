@@ -24,7 +24,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	// https://mvnrepository.com/artifact/io.camunda.spring/spring-boot-starter-camunda
 	implementation("io.camunda.spring:spring-boot-starter-camunda:8.5.16")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("io.camunda:spring-zeebe-test:8.4.0")

@@ -12,6 +12,9 @@
     <bpmn:serviceTask id="Activity_gpon_call_1" name="Call existing GPON REST API">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="Activity_gpon_call_1" retries="10" />
+        <zeebe:ioMapping>
+          <zeebe:input source="10" target="number" />
+        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1pfdgf7</bpmn:incoming>
       <bpmn:outgoing>Flow_0bdqhy5</bpmn:outgoing>
