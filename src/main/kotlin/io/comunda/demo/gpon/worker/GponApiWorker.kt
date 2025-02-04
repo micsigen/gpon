@@ -18,7 +18,7 @@ class GponApiWorker(
     @JobWorker(type = "Activity_gpon_call_1")
     fun handleGponCall(job: ActivatedJob): Map<String, Any> {
         println("Executing GPON API call for job ${job.key}")
-        val number = job.variablesAsMap.getOrDefault("number", 10) as Int
+        val number = job.variablesAsMap.getOrDefault("number", 10).toString().toInt()
 
         val result = webClient.get()
             .uri("$baseUrl/fibonacci?n=$number")
@@ -27,10 +27,14 @@ class GponApiWorker(
             .bodyToMono(String::class.java)
             .block() ?: 0
 
-        return mapOf(
+        val response = mapOf(
             "fibonacciResult" to result,
             "inputNumber" to number,
             "timestamp" to LocalDateTime.now().toString()
         )
+
+        println(response)
+
+        return response
     }
 }

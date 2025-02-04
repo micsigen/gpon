@@ -6,9 +6,7 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @Deployment(resources = ["classpath:gpon_process_1.bpmn"])
-class GponApplication() {
-
-}
+class GponApplication()
 
 fun main(args: Array<String>) {
     runApplication<GponApplication>(*args)

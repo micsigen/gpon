@@ -3,7 +3,7 @@ plugins {
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.4.2"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("com.google.cloud.tools.jib") version "3.4.0"
+	id("com.google.cloud.tools.jib") version "3.4.4"
 }
 
 group = "io.comunda.demo"
@@ -66,7 +66,7 @@ jib {
 			"-XX:+UseContainerSupport",
 			"-XX:MaxRAMPercentage=75"  // Container-aware memory settings
 		)
-		mainClass = "io.comunda.demo.gpon.worker.GponApplicationKt"
+		mainClass = "io.comunda.demo.gpon.GponApplicationKt"
 		environment = mapOf(
 			"SPRING_PROFILES_ACTIVE" to "prod",
 			"JAVA_TOOL_OPTIONS" to "-XX:+UseContainerSupport"

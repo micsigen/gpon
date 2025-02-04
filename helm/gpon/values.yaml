@@ -34,4 +34,4 @@ readinessProbe:
 
 config:
   baseUrl: http://fibonacci:8000
-  flowBrokerHost: camunda-platform-zeebe-gateway
+  flowBrokerHost: 10.42.0.92
