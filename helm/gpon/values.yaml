@@ -1,0 +1,37 @@
+replicaCount: 1
+
+image:
+  repository: gpon-worker
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+  managementPort: 9000
+
+resources:
+  limits:
+    cpu: 600m
+    memory: 512Mi
+  requests:
+    cpu: 300m
+    memory: 256Mi
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 9000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 9000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+config:
+  baseUrl: http://fibonacci:8000
+  flowBrokerHost: camunda-platform-zeebe-gateway

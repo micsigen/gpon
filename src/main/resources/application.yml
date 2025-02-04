@@ -36,3 +36,6 @@ zeebe:
       defaultName: "gpon_process_1"
     default-job-worker-tenant-ids:
       - "<default>"
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8000}
