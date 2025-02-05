@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_05hbht9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.31.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_05hbht9" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.31.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.6.0">
   <bpmn:process id="gpon_process_1" name="GPON REST API calling" isExecutable="true">
     <bpmn:extensionElements>
       <zeebe:properties>
@@ -11,45 +11,72 @@
     </bpmn:startEvent>
     <bpmn:serviceTask id="Activity_gpon_call_1" name="Call existing GPON REST API">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="Activity_gpon_call_1" retries="10" />
-        <zeebe:ioMapping>
-          <zeebe:input source="10" target="number" />
-        </zeebe:ioMapping>
+        <zeebe:taskDefinition type="Activity_gpon_call_1" retries="3" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1pfdgf7</bpmn:incoming>
-      <bpmn:outgoing>Flow_0bdqhy5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0lpjs6t</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1pfdgf7" sourceRef="Event_start_event" targetRef="Activity_gpon_call_1" />
     <bpmn:intermediateThrowEvent id="Event_end_event" name="End event">
       <bpmn:incoming>Flow_0bdqhy5</bpmn:incoming>
     </bpmn:intermediateThrowEvent>
-    <bpmn:sequenceFlow id="Flow_0bdqhy5" sourceRef="Activity_gpon_call_1" targetRef="Event_end_event" />
+    <bpmn:sequenceFlow id="Flow_0bdqhy5" sourceRef="Gateway_1vqmzif" targetRef="Event_end_event">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">= success = true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1vqmzif">
+      <bpmn:incoming>Flow_0lpjs6t</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bdqhy5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0hq4uc1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0lpjs6t" sourceRef="Activity_gpon_call_1" targetRef="Gateway_1vqmzif" />
+    <bpmn:endEvent id="Event_1db56m0">
+      <bpmn:incoming>Flow_0hq4uc1</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0hq4uc1" sourceRef="Gateway_1vqmzif" targetRef="Event_1db56m0">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">= success = false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="gpon_process_1">
       <bpmndi:BPMNShape id="Event_15d5llm_di" bpmnElement="Event_start_event">
-        <dc:Bounds x="182" y="102" width="36" height="36" />
+        <dc:Bounds x="182" y="192" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="177" y="145" width="54" height="14" />
+          <dc:Bounds x="177" y="235" width="54" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_00paoyj_di" bpmnElement="Activity_gpon_call_1">
-        <dc:Bounds x="270" y="80" width="100" height="80" />
+        <dc:Bounds x="270" y="170" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1vqmzif_di" bpmnElement="Gateway_1vqmzif" isMarkerVisible="true">
+        <dc:Bounds x="435" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1db56m0_di" bpmnElement="Event_1db56m0">
+        <dc:Bounds x="582" y="302" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_15ia4ct_di" bpmnElement="Event_end_event">
-        <dc:Bounds x="422" y="102" width="36" height="36" />
+        <dc:Bounds x="582" y="82" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="415" y="145" width="50" height="14" />
+          <dc:Bounds x="575" y="125" width="50" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1pfdgf7_di" bpmnElement="Flow_1pfdgf7">
-        <di:waypoint x="218" y="120" />
-        <di:waypoint x="270" y="120" />
+        <di:waypoint x="218" y="210" />
+        <di:waypoint x="270" y="210" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0bdqhy5_di" bpmnElement="Flow_0bdqhy5">
-        <di:waypoint x="370" y="120" />
-        <di:waypoint x="422" y="120" />
+        <di:waypoint x="460" y="185" />
+        <di:waypoint x="460" y="100" />
+        <di:waypoint x="582" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lpjs6t_di" bpmnElement="Flow_0lpjs6t">
+        <di:waypoint x="370" y="210" />
+        <di:waypoint x="435" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hq4uc1_di" bpmnElement="Flow_0hq4uc1">
+        <di:waypoint x="460" y="235" />
+        <di:waypoint x="460" y="320" />
+        <di:waypoint x="582" y="320" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

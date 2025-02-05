@@ -10,6 +10,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -42,7 +43,7 @@ class GponApiWorkerTest {
         @DynamicPropertySource
         fun properties(registry: DynamicPropertyRegistry) {
             registry.add("zeebe.client.broker.gateway-address")
-                { "${zeebe.host}:${zeebe.getMappedPort(26500)}" }
+            { "${zeebe.host}:${zeebe.getMappedPort(26500)}" }
         }
     }
 
@@ -116,5 +117,33 @@ class GponApiWorkerTest {
         Assertions.assertThat(result["fibonacciResult"]).isEqualTo(expectedResult)
         Assertions.assertThat(result["inputNumber"]).isEqualTo(10) // default value
         Assertions.assertThat(result["timestamp"]).isNotNull()
+    }
+
+    @Test
+    fun `should handle 400 Bad Request error`() {
+        // Given
+        mockWebServer.enqueue(
+            MockResponse()
+                .setResponseCode(400)
+                .setBody("Invalid input parameter")
+        )
+
+        val mockJob = Mockito.mock(ActivatedJob::class.java)
+        val variables = mapOf("number" to 100) // Invalid input
+        Mockito.`when`(mockJob.variablesAsMap).thenReturn(variables)
+        Mockito.`when`(mockJob.key).thenReturn(1L)
+
+        // When
+        val result = gponApiWorker.handleGponCall(mockJob)
+
+        // Then
+        assertThat(result["success"]).isEqualTo(false)
+        assertThat(result["error"]).isEqualTo("Invalid input parameter")
+        assertThat(result["inputNumber"]).isEqualTo(100)
+        assertThat(result["timestamp"]).isNotNull()
+        assertThat(result.containsKey("fibonacciResult")).isFalse()
+
+        val recordedRequest = mockWebServer.takeRequest()
+        assertThat(recordedRequest.path).isEqualTo("/fibonacci?n=100")
     }
 }

@@ -6,6 +6,8 @@ import io.comunda.demo.gpon.config.AppConfig
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.WebClientResponseException
+import reactor.core.publisher.Mono
 import java.time.LocalDateTime
 
 @Component
@@ -20,21 +22,32 @@ class GponApiWorker(
         println("Executing GPON API call for job ${job.key}")
         val number = job.variablesAsMap.getOrDefault("number", 10).toString().toInt()
 
-        val result = webClient.get()
-            .uri("$baseUrl/fibonacci?n=$number")
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToMono(String::class.java)
-            .block() ?: 0
+        return try {
+            val result = webClient.get()
+                .uri("$baseUrl/fibonacci?n=$number")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String::class.java)
+                .block() ?: throw RuntimeException("No response from API")
 
-        val response = mapOf(
-            "fibonacciResult" to result,
-            "inputNumber" to number,
-            "timestamp" to LocalDateTime.now().toString()
-        )
+            val response = mapOf(
+                "fibonacciResult" to result,
+                "inputNumber" to number,
+                "timestamp" to LocalDateTime.now().toString(),
+                "success" to true
+            )
 
-        println(response)
+            println(response)
+            response
+        } catch (e: WebClientResponseException.BadRequest) {
+            println("Bad Request Error: ${e.message}")
+            mapOf(
+                "error" to (e.responseBodyAsString ?: "Bad Request Error"),
+                "inputNumber" to number,
+                "timestamp" to LocalDateTime.now().toString(),
+                "success" to false
+            )
+        }
 
-        return response
     }
 }
