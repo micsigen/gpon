@@ -25,7 +25,7 @@ For local development, use the following command:
 ```
 To create a Helm package using the configuration in the `helm/` directory, run:
 ```sh
-helm package helm/
+helm package gpon/
 ```
 
 ## Deploy into K8S namespace
