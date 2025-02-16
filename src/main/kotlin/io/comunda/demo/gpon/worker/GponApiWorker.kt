@@ -42,7 +42,7 @@ class GponApiWorker(
         } catch (e: WebClientResponseException.BadRequest) {
             println("Bad Request Error: ${e.message}")
             mapOf(
-                "error" to (e.responseBodyAsString ?: "Bad Request Error"),
+                "error" to e.responseBodyAsString,
                 "inputNumber" to number,
                 "timestamp" to LocalDateTime.now().toString(),
                 "success" to false
