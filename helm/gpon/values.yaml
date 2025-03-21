@@ -34,4 +34,4 @@ readinessProbe:
 
 config:
   baseUrl: http://fibonacci:8000
-  flowBrokerHost: 10.42.0.140
+  flowBrokerHost: 10.42.0.181
